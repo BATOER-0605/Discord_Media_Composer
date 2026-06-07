@@ -73,7 +73,7 @@ npm start
 | `HOST` | `0.0.0.0` | バインドアドレス（全 IP からアクセス可） |
 | `SESSION_SECRET` | 自動生成 | Cookie 署名鍵。空なら起動時にランダム生成 |
 | `TARGET_MB` | `9.5` | 目標ファイルサイズ（MB） |
-| `MAX_UPLOAD_MB` | `500` | アップロード上限（MB） |
+| `MAX_UPLOAD_MB` | `2000` | アップロード上限（MB） |
 | `AUDIO_BITRATE_K` | `128` | 音声ビットレート（kbps） |
 | `MIN_VIDEO_BITRATE_K` | `145` | これを下回るなら解像度を下げる（kbps） |
 | `X264_PRESET` | `medium` | x264 プリセット |

@@ -37,7 +37,7 @@ export const SESSION_SECRET =
 export const TARGET_MB = num(process.env.TARGET_MB, 9.5);
 export const TARGET_BYTES = Math.floor(TARGET_MB * 1000 * 1000);
 
-export const MAX_UPLOAD_MB = num(process.env.MAX_UPLOAD_MB, 500);
+export const MAX_UPLOAD_MB = num(process.env.MAX_UPLOAD_MB, 2000);
 export const MAX_UPLOAD_BYTES = Math.floor(MAX_UPLOAD_MB * 1000 * 1000);
 
 export const AUDIO_BITRATE_K = num(process.env.AUDIO_BITRATE_K, 128);
