@@ -10,11 +10,18 @@ export function ensureDirs() {
   }
 }
 
-/** 起動時に旧データを一掃する（前回クラッシュ等の残骸対策）。 */
+/**
+ * 起動時に旧データを一掃する（前回クラッシュ等の残骸対策）。
+ * ディレクトリ自体は削除せず中身だけ消す。
+ * （Docker では uploads/outputs は tmpfs のマウントポイントで、
+ *  マウント点を rmdir すると EBUSY になるため。）
+ */
 export function wipeWorkDirs() {
   for (const dir of [UPLOADS_DIR, OUTPUTS_DIR]) {
-    fs.rmSync(dir, { recursive: true, force: true });
     fs.mkdirSync(dir, { recursive: true });
+    for (const entry of fs.readdirSync(dir)) {
+      fs.rmSync(path.join(dir, entry), { recursive: true, force: true });
+    }
   }
 }
 
