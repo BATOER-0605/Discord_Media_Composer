@@ -1,0 +1,28 @@
+# ゼロコンフィグ起動:
+#   git clone ... && docker compose up -d
+# だけで構築完了。設定ファイル(.env)の作成は不要です。
+# サーバに割り当てられた全 IP アドレスから http://<IP>:3000 でアクセスできます。
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    # ホストの全インターフェース(0.0.0.0)で 3000 番を公開する
+    ports:
+      - "0.0.0.0:${PORT:-3000}:3000"
+    environment:
+      # すべて任意。未設定でもアプリ側の既定値で動作する。
+      # SESSION_SECRET は未指定なら起動時に自動生成される。
+      PORT: "3000"
+      HOST: "0.0.0.0"
+      SESSION_SECRET: "${SESSION_SECRET:-}"
+      TARGET_MB: "${TARGET_MB:-9.5}"
+      MAX_UPLOAD_MB: "${MAX_UPLOAD_MB:-2000}"
+      AUDIO_BITRATE_K: "${AUDIO_BITRATE_K:-128}"
+      MIN_VIDEO_BITRATE_K: "${MIN_VIDEO_BITRATE_K:-145}"
+      X264_PRESET: "${X264_PRESET:-medium}"
+      GRACE_PERIOD_MINUTES: "${GRACE_PERIOD_MINUTES:-5}"
+      MAX_CONCURRENT_JOBS: "${MAX_CONCURRENT_JOBS:-2}"
+    # 一時ファイルはコンテナ内のディスク(書き込みレイヤ)に保存する。RAM を消費しない。
+    # ホストには bind せず、コンテナ削除と共に消える。さらにアプリ側で起動時クリア＋
+    # 猶予期間超過での削除を行うため、処理データはセッション終了時に確実に破棄される。
