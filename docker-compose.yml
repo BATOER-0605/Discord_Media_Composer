@@ -23,14 +23,6 @@ services:
       X264_PRESET: "${X264_PRESET:-medium}"
       GRACE_PERIOD_MINUTES: "${GRACE_PERIOD_MINUTES:-5}"
       MAX_CONCURRENT_JOBS: "${MAX_CONCURRENT_JOBS:-2}"
-    # 一時ファイルはホストに残さず、コンテナのライフサイクルで確実に消す。
-    # mode を 1777 にして非 root の node ユーザーでも確実に書き込めるようにする。
-    volumes:
-      - type: tmpfs
-        target: /app/uploads
-        tmpfs:
-          mode: 01777
-      - type: tmpfs
-        target: /app/outputs
-        tmpfs:
-          mode: 01777
+    # 一時ファイルはコンテナ内のディスク(書き込みレイヤ)に保存する。RAM を消費しない。
+    # ホストには bind せず、コンテナ削除と共に消える。さらにアプリ側で起動時クリア＋
+    # 猶予期間超過での削除を行うため、処理データはセッション終了時に確実に破棄される。
